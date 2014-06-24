@@ -8,6 +8,10 @@
 //- jQuery
 - scripts.add(["/vendor/jquery/dist/jquery.js"])
 
+//- Gridster
+- scripts.add(["/vendor/jquery.gridster.js"])
+- styles.add(["/vendor/jquery.gridster.css"])
+
 //- Bootstrap
 - scripts.add(["/vendor/components-bootstrap/js/bootstrap.js"])
 - styles.add(["/vendor/components-bootstrap/css/bootstrap.css"])
@@ -61,17 +65,20 @@ html(lang="en")
   body
 
     // Markup
-    nav.navbar.navbar-default.navbar-fixed-top
-      .container
-        .navbar-header
-          a.navbar-brand(href="/") Welcome
-        ul.nav.navbar-nav
-          each doc in getCollection('pages').toJSON()
-            - clazz = (document.url === doc.url) ? 'active' : null
-            li(typeof="sioc:Page", about=doc.url, class=clazz)
-              a(href=doc.url, property="dc:title")= doc.title
+    //
+      nav.navbar.navbar-default.navbar-fixed-top
+        .container
+          .navbar-header
+            a.navbar-brand(href="/") Welcome
+          ul.nav.navbar-nav
+            each doc in getCollection('pages').toJSON()
+              - clazz = (document.url === doc.url) ? 'active' : null
+              li(typeof="sioc:Page", about=doc.url, class=clazz)
+                a(href=doc.url, property="dc:title")= doc.title
     .container
       section#content.content!= content
+
+    //
       hr
       footer
         div= site.copyright
