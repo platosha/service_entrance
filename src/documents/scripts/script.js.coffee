@@ -32,7 +32,7 @@ class ContentItem
   setSize: (x, y) ->
     @sizeX = 1
     ys = 180 * y / x
-    @sizeY = Math.floor(Math.ceil((ys + 10) / 40 - 0.1) + 0.1)
+    @sizeY = Math.floor(Math.ceil((ys + 10) / 38 - 0.1) + 0.1)
     if @$widget
       gridster.resize_widget @$widget, @sizeX, @sizeY
 
@@ -47,7 +47,7 @@ refreshScrollablesIn = ($pane) ->
 $cells = $('.gridster .cells').gridster
   widget_selector: '.cell'
   widget_margins: [10, 10]
-  widget_base_dimensions: [180, 30]
+  widget_base_dimensions: [180, 28]
 
 gridster = $cells.data('gridster')
 

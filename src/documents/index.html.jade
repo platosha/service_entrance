@@ -8,12 +8,42 @@ contents:
 
   objects:
     -
-      image: 'kitten_1'
+      image: 'frame_1.png'
       author: 'Name'
       title: 'Untiled'
       year: 2004
     -
-      image: 'kitten_2'
+      image: 'frame_5.png'
+      author: 'Name'
+      title: 'Untiled'
+      year: 2004
+    -
+      image: 'frame_2.png'
+      author: 'Name'
+      title: 'Untiled'
+      year: 2004
+    -
+      image: 'frame_3.png'
+      author: 'Name'
+      title: 'Untiled'
+      year: 2004
+    -
+      image: 'frame_4.png'
+      author: 'Name'
+      title: 'Untiled'
+      year: 2004
+    -
+      image: 'frame_8.png'
+      author: 'Name'
+      title: 'Untiled'
+      year: 2004
+    -
+      image: 'frame_7.png'
+      author: 'Name'
+      title: 'Untiled'
+      year: 2004
+    -
+      image: 'frame_6.png'
       author: 'Name'
       title: 'Untiled'
       year: 2004
@@ -86,13 +116,13 @@ cells:
       .tab-content
         .tab-pane.active.scrollable#objects
           .contents.scrollable-content
-            each item in document.contents.objects.concat(document.contents.objects).concat(document.contents.objects)
+            each item in document.contents.objects.concat(document.contents.objects)
               .item.item_object
                 .buttons
-                  button.btn.btn-primary.btn-xs.button_add(type="button"): span.glyphicon.glyphicon-arrow-right
-                  button.btn.btn-primary.btn-xs.button_remove(type="button"): span.glyphicon.glyphicon-remove
+                  button.btn.btn-default.btn-xs.button_add(type="button"): span.glyphicon.glyphicon-arrow-right
+                  button.btn.btn-default.btn-xs.button_remove(type="button"): span.glyphicon.glyphicon-remove
                 figure
-                  img(src=getUrl('images/objects/' + item.image + '.jpeg'))
+                  img(src=getUrl('images/objects/' + item.image))
                   figcaption
                     = item.author
                     | , 
@@ -104,16 +134,16 @@ cells:
             each item in document.contents.videos.concat(document.contents.videos).concat(document.contents.videos).concat(document.contents.videos).concat(document.contents.videos)
               .item.item_video
                 .buttons
-                  button.btn.btn-primary.btn-xs.button_add(type="button"): span.glyphicon.glyphicon-arrow-right
-                  button.btn.btn-primary.btn-xs.button_remove(type="button"): span.glyphicon.glyphicon-remove
+                  button.btn.btn-default.btn-xs.button_add(type="button"): span.glyphicon.glyphicon-arrow-right
+                  button.btn.btn-default.btn-xs.button_remove(type="button"): span.glyphicon.glyphicon-remove
                 != item.embed_code
         .tab-pane.scrollable#texts
           .contents.scrollable-content
             each item in document.contents.texts.concat(document.contents.texts).concat(document.contents.texts).concat(document.contents.texts).concat(document.contents.texts)
               .item.item_words
                 .buttons
-                  button.btn.btn-primary.btn-xs.button_add(type="button"): span.glyphicon.glyphicon-arrow-right
-                  button.btn.btn-primary.btn-xs.button_remove(type="button"): span.glyphicon.glyphicon-remove
+                  button.btn.btn-default.btn-xs.button_add(type="button"): span.glyphicon.glyphicon-arrow-right
+                  button.btn.btn-default.btn-xs.button_remove(type="button"): span.glyphicon.glyphicon-remove
                 each paragraph in item.text.split(/(\r?\n){2}/)
                   p= paragraph
         .tab-pane.scrollable#audios
