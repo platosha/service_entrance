@@ -20,6 +20,6 @@ test:
 
 production:
   adapter: mysql2
-  username: service_entrace
-  database: service_entrace_production
+  username: service_entrance
+  database: service_entrance_production
 
