@@ -1,7 +1,7 @@
 module ApplicationHelper
   def title(value)
     unless value.nil?
-      @title = "#{value} | ServiceEntrance"      
+      @title = "#{value} | Service Entrance"
     end
   end
 end

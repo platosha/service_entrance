@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 ruby '2.1.1'
 gem 'rails', '4.0.4'
+gem 'active_model_serializers'
+gem 'slim-rails'
 gem 'sass-rails', '~> 4.0.1'
 gem 'uglifier', '~> 2.4.0'
 gem 'coffee-rails', '~> 4.0.1'
@@ -45,3 +47,7 @@ group :development, :test do
 end
 
 gem 'bootstrap-sass', '~> 3.0.3.0'
+
+# Upload and image processing
+gem 'carrierwave'
+gem 'mini_magick'

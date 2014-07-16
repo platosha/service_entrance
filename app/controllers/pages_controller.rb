@@ -4,9 +4,12 @@ class PagesController < ApplicationController
   ]
 
   def home
+    @exhibits_json ||= ActiveModel::ArraySerializer.new(Exhibit.all,
+      each_serializer: ExhibitSerializer
+    ).to_json
   end
-  
+
   def inside
-  end 
-    
+  end
+
 end

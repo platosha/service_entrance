@@ -9,29 +9,33 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <%= render 'layouts/svg_defs' %>
   <div id="wrap">
     <header>
       <%= render 'layouts/navigation' %>
     </header>
-      
+
     <div class="container">
-       
-      <div class="row">
-        <div class="col-sm-6 col-sm-offset-3 text-center">
-          <%= render 'layouts/messages' %>
-        </div>
-      </div>
-      
-      <div class="row">
-        <div class="col-sm-12">
-          <%= yield %>
-        </div>     
-      </div>  
-      
+
+      <%= render 'layouts/messages' %>
+
+      <%= yield %>
+
+      <!-- <div class="row"> -->
+      <!--   <div class="col&#45;sm&#45;6 col&#45;sm&#45;offset&#45;3 text&#45;center"> -->
+      <!--   </div> -->
+      <!-- </div> -->
+      <!--  -->
+      <!-- <div class="row"> -->
+      <!--   <div class="col&#45;sm&#45;12"> -->
+      <!--   </div> -->
+      <!-- </div> -->
+      <!--  -->
+
     </div>
   </div>
-    
-  <%= render 'layouts/footer' %>    
+
+  <%#= render 'layouts/footer' %>
 
 </body>
 </html>

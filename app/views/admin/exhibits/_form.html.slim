@@ -1,0 +1,38 @@
+= form_for [:admin, @exhibit], :html => { role: 'form', multipart: true, class: 'form-horizontal' } do |f|
+  .form-group 
+    = f.label :subtype, class: 'col-sm-3 control-label'
+    .col-sm-6
+      - Exhibit::SUBTYPES.each do |subtype|
+        label.radio-inline
+          = f.radio_button :subtype, subtype
+          = subtype
+  .form-group
+    = f.label :name, class: 'col-sm-3 control-label'
+    .col-sm-6 = f.text_field :name, autofocus: true, class: 'form-control'
+  .form-group
+    = f.label :author, class: 'col-sm-3 control-label'
+    .col-sm-6 = f.text_field :author, class: 'form-control'
+  .form-group
+    = f.label :year, class: 'col-sm-3 control-label'
+    .col-sm-6 = f.text_field :year, class: 'form-control'
+  .form-group
+    = f.label :materials, class: 'col-sm-3 control-label'
+    .col-sm-6 = f.text_field :materials, class: 'form-control'
+  .form-group
+    = f.label :size, class: 'col-sm-3 control-label'
+    .col-sm-6 = f.text_field :size, class: 'form-control'
+  .form-group
+    = f.label :owner, class: 'col-sm-3 control-label'
+    .col-sm-6 = f.text_field :owner, class: 'form-control'
+  .form-group
+    = f.label :image, class: 'col-sm-3 control-label'
+    .col-sm-6
+      - if @exhibit.image?
+        p = image_tag(@exhibit.image.thumb)
+      = f.file_field :image
+    = f.hidden_field :image_cache
+        
+  .row: .col-sm-6.col-sm-offset-3
+    = f.submit class: 'btn btn-danger'
+    = link_to "Back to exhibits", admin_exhibits_path, class: 'btn btn-link'
+

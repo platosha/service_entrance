@@ -4,4 +4,269 @@
  *= require_self
  */
 @import "framework_and_overrides";
+@import "jquery.gridster";
 
+
+.iScrollHorizontalScrollbar {
+  position: absolute;
+  z-index: 9999;
+  height: 6px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  overflow: hidden;
+  &.iScrollBothScrollbars {
+    right: 18px;
+    }
+  }
+
+.iScrollVerticalScrollbar {
+  position: absolute;
+  z-index: 9999;
+  width: 6px;
+  bottom: 3px;
+  top: 3px;
+  right: 3px;
+  overflow: hidden;
+  &.iScrollBothScrollbars {
+    bottom: 9px;
+    }
+  }
+
+.iScrollIndicator {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  .iScrollHorizontalScrollbar & {
+    height: 100%;
+    }
+  .iScrollVerticalScrollbar & {
+    width: 100%;
+    }
+  }
+
+
+body {
+  }
+
+a, a:link {
+  cursor: pointer
+  }
+
+
+.stroke-main {
+  stroke: $text-color;
+  }
+.fill-main {
+  fill: $text-color;
+  }
+
+
+.nav-tabs {
+  a {
+    font-weight: bold;
+    background: #ddd;
+    color: #777;
+    &:hover {
+      background: #eee;
+      }
+    text-transform: uppercase;
+    border-radius: 0 !important;
+    }
+  li.active a {
+    background: $body-bg;
+    &,
+    &:hover {
+      color: $text-color;
+      }
+    }
+  }
+
+
+.gridster {
+  width: auto;
+  overflow: hidden;
+  margin: 0 auto;
+  @include transition(width .3s);
+  .cell {
+    position: absolute;
+    }
+  }
+
+.cell {
+  }
+.cell_image {
+  img {
+    width: 100%;
+    }
+  }
+
+.panes {
+  position: absolute;
+  left: 0;
+  top: $navbar-height;
+  right: 0;
+  bottom: 0;
+  }
+
+.scrollable {
+  overflow: scroll;
+  overflow-x: hidden;
+  position: relative;
+  z-index: 1;
+  &.iscroll {
+    overflow: visible;
+    overflow-x: visible;
+    }
+  }
+
+.pane {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  top: 0;
+  background: $body-bg;
+  @include transition(width .3s);
+  .nav-tabs {
+    position: relative;
+    z-index: 2;
+    background: $body-bg;
+    }
+  .tab-content {
+    box-sizing: padding-box;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+    padding-top: 42px;
+    margin-top: -42px;
+    }
+  .tab-pane {
+    height: 100%;
+    }
+  }
+.pane_left {
+  left: 0;
+  }
+.pane_right {
+  right: 0;
+  border-left: 1px solid #000;
+  }
+
+.items {
+  // width: 100%;
+  // box-sizing: padding-box;
+  // padding: 5% 10%;
+  margin: 30px auto;
+  }
+
+.item {
+  position: relative;
+  .cell & {
+    background: $body-bg;
+    padding: 10px;
+    margin: -10px;
+    }
+  .items .item-displayed & {
+    display: none;
+    }
+  .buttons-wrap {
+    position: relative; z-index: 1;
+    > * {
+      opacity: 1;
+      }
+    &:hover {
+      border: 1px solid $text-color;
+      margin: -1px;
+      > * {
+        opacity: 0.3;
+        }
+      > .buttons {
+        opacity: 1;
+        }
+      }
+    }
+  .buttons {
+    position: absolute;
+    opacity: 0;
+    line-height: 20px;
+    }
+  .buttons_mid {
+    left: 0; top: 0; right: 0; bottom: 0;
+    margin: auto;
+    height: 63px;
+    text-align: center;
+    .bvi {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 20px;
+      }
+    }
+  .buttons_tl,
+  .buttons_bl {
+    left: 5px;
+    text-align: left;
+    .bvi {
+      float: left;
+      margin: 0 5px 0 0;
+      }
+    }
+  .buttons_tr,
+  .buttons_br {
+    right: 5px;
+    text-align: right;
+    .bvi {
+      float: right;
+      margin: 0 0 0 5px;
+      }
+    }
+  .buttons_tl,
+  .buttons_tr {
+    top: 5px;
+    }
+  .buttons_bl,
+  .buttons_br {
+    bottom: 5px;
+    }
+  .button-add {
+    display: inline-block;
+    }
+  .button-remove,
+  .button-toggle-size {
+    display: none;
+    }
+  .item-displayed & {
+    .button-remove,
+    .button-toggle-size {
+      display: inline-block;
+      }
+    .button-add {
+      display: none;
+      }
+    }
+  }
+  .bvi .vi {
+    display: block;
+    }
+
+figure {
+  margin: 2em 0;
+  .cell & {
+    margin: 0;
+    }
+  img {
+    width: 100%;
+    }
+  figcaption {
+    margin: .5em 0 0;
+    }
+  p {
+    margin: 0;
+    }
+  }
+
+#display {
+  margin: 30px;
+  header {
+    text-align: center;
+    }
+  }

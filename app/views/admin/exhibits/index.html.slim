@@ -1,0 +1,50 @@
+h1 Exhibits <small>Admin</small>
+p = link_to("Back to Admin", admin_root_path)
+
+div.text-center
+  p = page_entries_info @exhibits
+  = paginate @exhibits
+
+.row
+  .col-sm-6
+    = form_tag admin_exhibits_path, method: 'get', role: "form", class: 'form-inline' do
+      .form-group
+        = text_field_tag :search, params[:search], class: 'form-control input-sm'
+      |  
+      = submit_tag "Search", name: nil, class: "btn btn-sm btn-primary"
+      |  
+      = link_to "All", admin_exhibits_path, class: "btn btn-sm btn-link"
+  .col-sm-6.text-right
+    p = link_to "New exhibit", new_admin_exhibit_path, class: 'btn btn-primary'
+
+table.table.table-striped
+  tr
+    th Subtype
+    th Name
+    th Author
+    th Year
+    th Materials
+    th Size
+    th Owner
+    th Image
+    th 
+
+  - @exhibits.each do |exhibit|
+    tr
+      td = exhibit.subtype
+      td = exhibit.name
+      td = exhibit.author
+      td = exhibit.year
+      td = exhibit.materials
+      td = exhibit.size
+      td = exhibit.owner
+      td = image_tag(exhibit.image.thumb)
+      td
+        = link_to "Edit", edit_admin_exhibit_path(exhibit), class: 'btn btn-sm btn-link'
+        |  
+        = button_to "Delete", admin_exhibit_path(exhibit, action: :destroy), method: :delete, data: { confirm: 'Are you sure to delete exhibit?' }, class: "btn btn-sm btn-danger"
+
+div.text-center
+  p = page_entries_info @exhibits
+  = paginate @exhibits
+

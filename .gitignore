@@ -24,7 +24,12 @@ doc/
 .project
 .DS_Store
 .idea
+.powenv
 
 # Ignore application configuration
 /config/application.yml
 .secret
+
+# Ignore uploads
+/public/uploads
+
