@@ -28,6 +28,7 @@ doc/
 
 # Ignore application configuration
 /config/application.yml
+/config/database.yml
 .secret
 
 # Ignore uploads

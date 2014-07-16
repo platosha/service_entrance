@@ -19,7 +19,7 @@ test:
   timeout: 5000
 
 production:
-  adapter: postgresql
-  encoding: unicode
-  pool: 5
-  timeout: 5000
+  adapter: mysql2
+  username: service_entrace
+  database: service_entrace_production
+
