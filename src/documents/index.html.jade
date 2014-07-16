@@ -1,0 +1,162 @@
+--- yaml
+
+layout: constructor
+
+title: 'Home'
+
+contents:
+
+  objects:
+    -
+      image: 'frame_1.png'
+      author: 'Name'
+      title: 'Untiled'
+      year: 2004
+    -
+      image: 'frame_5.png'
+      author: 'Name'
+      title: 'Untiled'
+      year: 2004
+    -
+      image: 'frame_2.png'
+      author: 'Name'
+      title: 'Untiled'
+      year: 2004
+    -
+      image: 'frame_3.png'
+      author: 'Name'
+      title: 'Untiled'
+      year: 2004
+    -
+      image: 'frame_4.png'
+      author: 'Name'
+      title: 'Untiled'
+      year: 2004
+    -
+      image: 'frame_8.png'
+      author: 'Name'
+      title: 'Untiled'
+      year: 2004
+    -
+      image: 'frame_7.png'
+      author: 'Name'
+      title: 'Untiled'
+      year: 2004
+    -
+      image: 'frame_6.png'
+      author: 'Name'
+      title: 'Untiled'
+      year: 2004
+
+  texts:
+    -
+      text: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+    -
+      text: 'Ipsum magnam sequi sint cupiditate accusantium eligendi maxime nemo molestias cum ex aperiam provident! Dicta nostrum quos praesentium suscipit placeat sequi, neque, inventore. Consectetur quaerat officia explicabo voluptates culpa praesentium?'
+
+  videos:
+    -
+      aspect_ratio: 16.0 / 9.0
+      embed_code: '<div style="background:#ccc; height:200px;"></div>'
+      # embed_code: '<iframe width="#{width}" height="#{height}" src="http://www.youtube.com/embed/cBn6Jz7N3Cw?rel=0&amp;wmode=Opaque" frameborder="0" allowfullscreen></iframe>'
+    -
+      aspect_ratio: 16.0 / 9.0
+      embed_code: '<div style="background:#ccc; height:200px;"></div>'
+      # embed_code: '<iframe width="#{width}" height="#{height}" src="http://www.youtube.com/embed/6IgGVjsazxw?rel=0&amp;wmode=Opaque" frameborder="0" allowfullscreen></iframe>'
+    -
+      aspect_ratio: 16.0 / 9.0
+      embed_code: '<div style="background:#ccc; height:200px;"></div>'
+      # embed_code: '<iframe width="#{width}" height="#{height}" src="http://www.youtube.com/embed/jkOTPSrKZto?rel=0&amp;wmode=Opaque" frameborder="0" allowfullscreen></iframe>'
+
+cells:
+  -
+    row: 1
+    col: 1
+    sizex: 2
+    sizey: 2
+  -
+    row: 1
+    col: 3
+    sizex: 1
+    sizey: 1
+  -
+    row: 1
+    col: 4
+    sizex: 1
+    sizey: 1
+  -
+    row: 1
+    col: 5
+    sizex: 1
+    sizey: 1
+  -
+    row: 2
+    col: 3
+    sizex: 1
+    sizey: 1
+  -
+    row: 2
+    col: 4
+    sizex: 1
+    sizey: 1
+
+---
+
+
+.panes
+
+  .pane.pane_left
+
+      ul.nav.nav-tabs.nav-justified#contents-tabs
+        li.active: a(href="#objects", role="tab", data-toggle="tab") Objects
+        li: a(href="#texts", role="tab", data-toggle="tab") Words
+        li: a(href="#videos", role="tab", data-toggle="tab") Videos
+        li: a(href="#audios", role="tab", data-toggle="tab") Sounds
+
+      .tab-content
+        .tab-pane.active.scrollable#objects
+          .contents.scrollable-content
+            each item in document.contents.objects.concat(document.contents.objects)
+              .item.item_object
+                .buttons
+                  button.btn.btn-default.btn-xs.button_add(type="button"): span.glyphicon.glyphicon-arrow-right
+                  button.btn.btn-default.btn-xs.button_remove(type="button"): span.glyphicon.glyphicon-remove
+                figure
+                  img(src=getUrl('images/objects/' + item.image))
+                  figcaption
+                    = item.author
+                    | , 
+                    = item.title
+                    | , 
+                    = item.year
+        .tab-pane.scrollable#videos
+          .contents.scrollable-content
+            each item in document.contents.videos.concat(document.contents.videos).concat(document.contents.videos).concat(document.contents.videos).concat(document.contents.videos)
+              .item.item_video
+                .buttons
+                  button.btn.btn-default.btn-xs.button_add(type="button"): span.glyphicon.glyphicon-arrow-right
+                  button.btn.btn-default.btn-xs.button_remove(type="button"): span.glyphicon.glyphicon-remove
+                != item.embed_code
+        .tab-pane.scrollable#texts
+          .contents.scrollable-content
+            each item in document.contents.texts.concat(document.contents.texts).concat(document.contents.texts).concat(document.contents.texts).concat(document.contents.texts)
+              .item.item_words
+                .buttons
+                  button.btn.btn-default.btn-xs.button_add(type="button"): span.glyphicon.glyphicon-arrow-right
+                  button.btn.btn-default.btn-xs.button_remove(type="button"): span.glyphicon.glyphicon-remove
+                each paragraph in item.text.split(/(\r?\n){2}/)
+                  p= paragraph
+        .tab-pane.scrollable#audios
+          .contents.scrollable-content
+
+  .pane.pane_right
+
+    article.gridster
+      .cells
+
+
+// .gridster
+//   .cells
+//     each cell in document.cells
+//       .cell.cell_image(data-row=cell.row, data-col=cell.col, data-sizex=cell.sizex, data-sizey=cell.sizey)
+//         img(src=getUrl("/images/objects/kitten_1.jpeg"))
