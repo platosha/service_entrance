@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.1'
+
 gem 'rails', '4.0.4'
 gem 'active_model_serializers'
 gem 'slim-rails'
@@ -30,10 +30,8 @@ gem 'friendly_id', '~> 5.0.2'
 # font-awesome
 gem 'font-awesome-sass', '~> 4.0.2'
 
-# production gems for heroku
 group :production do
-  gem 'pg'
-  gem 'rails_12factor'
+  gem 'mysql2'
 end
 
 
@@ -51,3 +49,9 @@ gem 'bootstrap-sass', '~> 3.0.3.0'
 # Upload and image processing
 gem 'carrierwave'
 gem 'mini_magick'
+
+gem 'capistrano', '~> 3.1.0'
+gem 'capistrano-bundler', '~> 1.1.2'
+gem 'capistrano-rails', '~> 1.1.1'
+gem 'capistrano-rvm', github: "capistrano/rvm"
+

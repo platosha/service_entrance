@@ -32,7 +32,7 @@ doc/
 .secret
 
 # Ignore uploads
-/public/uploads
+/public/system
 
 node_modules/
 out/
