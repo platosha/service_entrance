@@ -5,6 +5,7 @@
  */
 @import "framework_and_overrides";
 @import "jquery.gridster";
+@import "compass/css3";
 
 
 .iScrollHorizontalScrollbar {
@@ -65,10 +66,9 @@ a, a:link {
 .nav-tabs {
   a {
     font-weight: bold;
-    background: #ddd;
     color: #777;
     &:hover {
-      background: #eee;
+      color: #333;
       }
     text-transform: uppercase;
     border-radius: 0 !important;
@@ -82,9 +82,18 @@ a, a:link {
     }
   }
 
+@media (min-width: $screen-sm-min) {
+  #contents-tabs {
+    position: absolute; z-index: 2;
+    @include transform(rotate(90deg) translate(0, -100%));
+    @include transform-origin(0, 0);
+    }
+  }
+
 
 .gridster {
   width: auto;
+  // width: 420px;
   overflow: hidden;
   margin: 0 auto;
   @include transition(width .3s);
@@ -122,7 +131,6 @@ a, a:link {
 
 .pane {
   position: absolute;
-  width: 50%;
   height: 100%;
   top: 0;
   background: $body-bg;
@@ -137,23 +145,26 @@ a, a:link {
     height: 100%;
     position: relative;
     z-index: 1;
-    padding-top: 42px;
-    margin-top: -42px;
+    // padding-top: 42px;
+    // margin-top: -42px;
     }
   .tab-pane {
     height: 100%;
     }
   }
 .pane_left {
+  width: 33.33%;
   left: 0;
   }
 .pane_right {
+  width: 66.67%;
   right: 0;
   border-left: 1px solid #000;
   }
 
 .items {
   // width: 100%;
+  width: 60%;
   // box-sizing: padding-box;
   // padding: 5% 10%;
   margin: 30px auto;
@@ -168,6 +179,9 @@ a, a:link {
     }
   .items .item-displayed & {
     display: none;
+    }
+  .items & {
+    margin: 0 0 4em;
     }
   .buttons-wrap {
     position: relative; z-index: 1;
@@ -257,7 +271,7 @@ figure {
     width: 100%;
     }
   figcaption {
-    margin: .5em 0 0;
+    margin: 1em 0 0;
     }
   p {
     margin: 0;

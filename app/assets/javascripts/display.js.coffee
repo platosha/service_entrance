@@ -1,7 +1,7 @@
 #= require 'lodash.underscore.min'
 #= require 'backbone-min'
 #= require 'backbone.marionette.min'
-# require 'iscroll'
+#= require 'iscroll'
 #= require 'jquery.gridster'
 
 
@@ -121,13 +121,15 @@ class GridsterCollectionView extends Marionette.CollectionView
       @resizeWidget childView
 
 
-class window.ExhibitListView extends GridsterCollectionView
-  maxCols: 2
-  enableDragging: false
+class window.ExhibitListView extends Marionette.CollectionView
+  initialize: ->
+    console.log @$el.closest('.scrollable')
   childView: ExhibitView
 
 
 class window.DisplayView extends GridsterCollectionView
+  minCols: 3
+  maxCols: 3
   childView: ExhibitView
 
 
@@ -144,6 +146,18 @@ DisplayApplication.addInitializer ->
     collection: displayedItems
     el: '#display-view'
   dv.render()
+  $ct = $('#contents-tabs')
+  $pl = $('.pane_left')
+  resizeTabs = ->
+    position = $ct.css('position')
+    if position is 'absolute'
+      $ct.width($pl.height())
+    else
+      $ct.width('auto')
+  resizeTabsSafe = _.throttle(resizeTabs, 12)
+  if $ct.length
+    resizeTabs()
+    $(window).on 'resize', resizeTabsSafe
 
 
 # class ContentItem extends Backbone.Model
