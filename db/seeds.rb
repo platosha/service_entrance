@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # Generated with RailsBricks
 # Initial seed file to use with Devise User Model
 
@@ -25,4 +27,19 @@ Dir.glob(File.join(File.dirname(__FILE__), 'seeds', 'images', '*')).each do |ima
   )
   e.image = File.open(image_path)
   e.save!
+end
+
+5.times do
+  Note.new(
+    body: 'Эротическое аккумулирует художественный талант.',
+    author: 'Антон Бекасов'
+  ).save!
+  Note.new(
+    body: 'Миракль, в том числе, использует резкий драматизм.',
+    author: 'Яндекс Весна'
+  ).save!
+  Note.new(
+    body: 'Шиллер утверждал: иносказательность образа имитирует комплекс агрессивности.',
+    author: 'Яндекс Весна'
+  ).save!
 end

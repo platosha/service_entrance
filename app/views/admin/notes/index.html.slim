@@ -1,0 +1,37 @@
+h1 Notes <small>Admin</small>
+p = link_to("Back to Admin", admin_root_path)
+
+div.text-center
+  p = page_entries_info @notes
+  = paginate @notes
+
+.row
+  .col-sm-6
+    = form_tag admin_notes_path, method: 'get', role: "form", class: 'form-inline' do
+      .form-group
+        = text_field_tag :search, params[:search], class: 'form-control input-sm'
+      |  
+      = submit_tag "Search", name: nil, class: "btn btn-sm btn-primary"
+      |  
+      = link_to "All", admin_notes_path, class: "btn btn-sm btn-link"
+  .col-sm-6.text-right
+    p = link_to "New note", new_admin_note_path, class: 'btn btn-primary'
+
+table.table.table-striped
+  tr
+    th Text
+    th Author
+    th 
+
+  - @notes.each do |note|
+    tr
+      td = note.body
+      td = note.author
+      td
+        = link_to "Edit", edit_admin_note_path(note), class: 'btn btn-sm btn-link'
+        |  
+        = button_to "Delete", admin_note_path(note, action: :destroy), method: :delete, data: { confirm: 'Are you sure to delete note?' }, class: "btn btn-sm btn-danger"
+
+div.text-center
+  p = page_entries_info @notes
+  = paginate @notes

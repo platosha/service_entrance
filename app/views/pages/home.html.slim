@@ -3,6 +3,7 @@
 
 javascript:
   displayItems.exhibits.reset(#{ @exhibits_json.html_safe });
+  displayItems.notes.reset(#{ @notes_json.html_safe });
 
 
 script type="text/html" id="tmpl_exhibit"
@@ -22,6 +23,21 @@ script type="text/html" id="tmpl_exhibit"
         p <%= size %>
         p <%= owner %>
 
+script type="text/html" id="tmpl_note"
+  .item.item_note
+    blockquote.note
+      .buttons-wrap
+        p <%= body %>
+        .buttons.buttons_mid
+          a.bvi.button-add href="#": svg.vi width="75" height="63": use xlink:href="#vi-plus"
+        .buttons.buttons_tr
+          a.bvi.button-remove href="#": svg.vi width="20" height="20": use xlink:href="#vi-cross"
+        .buttons.buttons_br
+          a.bvi.button-toggle-size href="#": svg.vi width="20" height="20": use xlink:href="#vi-resize"
+        footer
+          cite
+            <%= author %>
+
 
 .panes
 
@@ -30,17 +46,17 @@ script type="text/html" id="tmpl_exhibit"
       ul.nav.nav-tabs.nav-justified#contents-tabs
         li.active: a href="#objects" role="tab" data-toggle="tab" Объекты
         li: a href="#texts" role="tab" data-toggle="tab" Тексты
-        li: a href="#videos" role="tab" data-toggle="tab" Мультимедиа
-        li: a href="#audios" role="tab" data-toggle="tab" Контекст
+        li: a href="#multimedia" role="tab" data-toggle="tab" Мультимедиа
+        li: a href="#context" role="tab" data-toggle="tab" Контекст
 
       .tab-content
         .tab-pane.active.scrollable#objects
           .items.scrollable-content
-        .tab-pane.scrollable#videos
-          .items.scrollable-content
         .tab-pane.scrollable#texts
           .items.scrollable-content
-        .tab-pane.scrollable#audios
+        .tab-pane.scrollable#multimedia
+          .items.scrollable-content
+        .tab-pane.scrollable#context
           .items.scrollable-content
 
   .pane.pane_right.scrollable

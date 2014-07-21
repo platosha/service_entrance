@@ -14,17 +14,23 @@ $ ->
 
 class window.DisplayItem extends Backbone.Model
 
+class window.DisplayItems extends Backbone.Collection
+  # model: DisplayItem
+window.displayedItems = new Backbone.Collection
+
 
 class window.Exhibit extends DisplayItem
-
-
-class window.DisplayItems extends Backbone.Collection
-  model: DisplayItem
-window.displayedItems = new DisplayItems
-
+  getView: -> window.ExhibitView
 
 class window.Exhibits extends Backbone.Collection
   model: Exhibit
+
+
+class window.Note extends DisplayItem
+  getView: -> window.NoteView
+
+class window.Notes extends Backbone.Collection
+  model: Note
 
 
 class window.DisplayItemView extends Marionette.ItemView
@@ -64,8 +70,8 @@ class window.ExhibitView extends DisplayItemView
   template: '#tmpl_exhibit'
 
 
-class window.WordingView extends DisplayItemView
-  template: '#tmpl_wording'
+class window.NoteView extends DisplayItemView
+  template: '#tmpl_note'
 
 
 class GridsterCollectionView extends Marionette.CollectionView
@@ -123,18 +129,24 @@ class GridsterCollectionView extends Marionette.CollectionView
 
 class window.ExhibitListView extends Marionette.CollectionView
   initialize: ->
-    console.log @$el.closest('.scrollable')
   childView: ExhibitView
+
+
+class window.NoteListView extends Marionette.CollectionView
+  initialize: ->
+  childView: NoteView
 
 
 class window.DisplayView extends GridsterCollectionView
   minCols: 3
   maxCols: 3
-  childView: ExhibitView
+  getChildView: (child) ->
+    child.getView()
 
 
 window.displayItems =
   exhibits: new Exhibits
+  notes: new Notes
 
 
 DisplayApplication.addInitializer ->
@@ -142,6 +154,10 @@ DisplayApplication.addInitializer ->
     collection: displayItems.exhibits
     el: '#objects .items'
   elv.render()
+  nlv = new NoteListView
+    collection: displayItems.notes
+    el: '#texts .items'
+  nlv.render()
   dv = new DisplayView
     collection: displayedItems
     el: '#display-view'
