@@ -83,10 +83,10 @@ class window.NoteView extends DisplayItemView
 class GridsterCollectionView extends Marionette.CollectionView
   minCols: 1
   maxCols: 5
-  margins: [ 25, 25 ]
-  currentMargins: [ 25, 25 ]
-  baseDimensions: [ 200, 25 ]
-  currentDimensions: [ 200, 25 ]
+  margins: [ 25, 10 ]
+  currentMargins: [ 25, 10 ]
+  baseDimensions: [ 200, 10 ]
+  currentDimensions: [ 200, 10 ]
   enableDragging: true
   initialize: ->
     @$el.gridster
