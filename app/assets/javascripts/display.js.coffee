@@ -2,7 +2,12 @@
 #= require 'backbone-min'
 #= require 'backbone.marionette.min'
 #= require 'iscroll'
+#= require 'jquery.coords'
+#= require 'jquery.collision'
+#= require 'jquery.draggable'
+#= require 'utils'
 #= require 'jquery.gridster'
+# require 'draggabilly.pkgd.min'
 
 
 window.DisplayApplication = new Marionette.Application
@@ -52,6 +57,7 @@ class window.DisplayItemView extends Marionette.ItemView
     @on 'buttonToggleSize:click', (e) ->
       e.view.toggleSize()
       e.view.trigger 'resize'
+    # @draggie = new Draggabilly @el
   modelEvents:
     addedToDisplay: ->
       @$el.addClass('item-displayed')
@@ -77,8 +83,10 @@ class window.NoteView extends DisplayItemView
 class GridsterCollectionView extends Marionette.CollectionView
   minCols: 1
   maxCols: 5
-  margins: [10, 10]
-  baseDimensions: [180, 10]
+  margins: [ 25, 25 ]
+  currentMargins: [ 25, 25 ]
+  baseDimensions: [ 200, 25 ]
+  currentDimensions: [ 200, 25 ]
   enableDragging: true
   initialize: ->
     @$el.gridster
@@ -89,6 +97,25 @@ class GridsterCollectionView extends Marionette.CollectionView
       max_cols: @maxCols
     @gridster = @$el.data 'gridster'
     @gridster.disable() unless @enableDragging
+    @$parent = @$el.closest('article')
+    if @$parent.length
+      @resizeGridster()
+      $(window).on 'resize', => @resizeGridster()
+  resizeGridster: ->
+    ratio = @$parent.width() / (@maxCols * (@baseDimensions[0] + @margins[0] * 2))
+    @currentDimensions[0] = @baseDimensions[0] * ratio
+    @currentDimensions[1] = @baseDimensions[1] * ratio
+    @currentMargins[0] = @margins[0] * ratio
+    @currentMargins[1] = @margins[1] * ratio
+    @gridster.resize_widget_dimensions
+      widget_base_dimensions: [
+        @currentDimensions[0]
+        @currentDimensions[1]
+      ]
+      widget_margins: [
+        @currentMargins[0]
+        @currentMargins[1]
+      ]
   attachHtml: (collectionView, childView, index) ->
     childView.$el.addClass('cell')
     $widget = @gridster.add_widget childView.el
@@ -111,8 +138,8 @@ class GridsterCollectionView extends Marionette.CollectionView
       $c = childView.$el.children()
       w = $c.width()
       h = $c.height()
-      sizeX = Math.ceil((w + @margins[0]) / (@baseDimensions[0] + @margins[0] * 2) - 0.001)
-      sizeY = Math.ceil((h + @margins[1]) / (@baseDimensions[1] + @margins[1] * 2) - 0.001)
+      sizeX = Math.ceil((w + @currentMargins[0]) / (@currentDimensions[0] + @currentMargins[0] * 2) - 0.001)
+      sizeY = Math.ceil((h + @currentMargins[1]) / (@currentDimensions[1] + @currentMargins[1] * 2) - 0.001)
       childView.originalSize =
         x: sizeX
         y: sizeY
