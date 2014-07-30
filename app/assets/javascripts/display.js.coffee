@@ -1,4 +1,4 @@
-#= require 'lodash.underscore.min'
+#= require 'underscore-min'
 #= require 'backbone-min'
 #= require 'backbone.marionette.min'
 #= require 'iscroll'
@@ -18,10 +18,14 @@ $ ->
 
 
 class window.DisplayItem extends Backbone.Model
+  initialize: ->
+    @id = @constructor.name + '_' + @id
+  getView: -> window.DisplayItemView
 
 class window.DisplayItems extends Backbone.Collection
-  # model: DisplayItem
-window.displayedItems = new Backbone.Collection
+  model: DisplayItem
+window.displayedItems = new DisplayItems
+window.displayedItems.reset()
 
 
 class window.Exhibit extends DisplayItem
@@ -46,7 +50,7 @@ class window.DisplayItemView extends Marionette.ItemView
   onRender: ->
     @on 'buttonAdd:click', (e) ->
       unless e.model.get 'addedToDisplay'
-        window.displayedItems.add e.model
+        window.displayedItems.push e.model
         e.model.set 'addedToDisplay', true
         e.model.trigger 'addedToDisplay'
     @on 'buttonRemove:click', (e) ->
@@ -77,6 +81,8 @@ class window.ExhibitView extends DisplayItemView
 
 
 class window.NoteView extends DisplayItemView
+  basicSize: [2, 2]
+  getScale: -> 2
   template: '#tmpl_note'
 
 
@@ -118,7 +124,8 @@ class GridsterCollectionView extends Marionette.CollectionView
       ]
   attachHtml: (collectionView, childView, index) ->
     childView.$el.addClass('cell')
-    $widget = @gridster.add_widget childView.el
+    basicSize = childView.basicSize or [undefined, undefined]
+    $widget = @gridster.add_widget childView.el, basicSize[0], basicSize[1]
     $imgs = $widget.find('img').css('opacity', 0)
     if $imgs.length
       promises = for img in $imgs
@@ -134,18 +141,20 @@ class GridsterCollectionView extends Marionette.CollectionView
       @resizeWidget(childView)
   resizeWidget: (childView) ->
     scale = childView.getScale()
+    basicSize = childView.basicSize or [1, 1]
     unless childView.originalSize
       $c = childView.$el.children()
       w = $c.width()
       h = $c.height()
-      sizeX = Math.ceil((w + @currentMargins[0]) / (@currentDimensions[0] + @currentMargins[0] * 2) - 0.001)
-      sizeY = Math.ceil((h + @currentMargins[1]) / (@currentDimensions[1] + @currentMargins[1] * 2) - 0.001)
+      sizeX = Math.ceil((w + @currentMargins[0]) / (@currentDimensions[0] + @currentMargins[0] * 2) / basicSize[0] - 0.001)
+      sizeY = Math.ceil((h + @currentMargins[1]) / (@currentDimensions[1] + @currentMargins[1] * 2) / basicSize[1] - 0.001)
       childView.originalSize =
         x: sizeX
         y: sizeY
     else
       sizeX = childView.originalSize.x
       sizeY = childView.originalSize.y
+    console.log sizeX, sizeY
     @gridster.resize_widget childView.$el, sizeX * scale, sizeY * scale
   onBeforeRemoveChild: (childView) ->
     @gridster.remove_widget childView.$el
@@ -168,7 +177,8 @@ class window.DisplayView extends GridsterCollectionView
   minCols: 3
   maxCols: 3
   getChildView: (child) ->
-    child.getView()
+    if child instanceof DisplayItem
+      child.getView()
 
 
 window.displayItems =
@@ -201,7 +211,11 @@ DisplayApplication.addInitializer ->
   if $ct.length
     resizeTabs()
     $(window).on 'resize', resizeTabsSafe
-
+  $panes = $('.panes')
+  $('.button-pane-expand, .button-pane-collapse').on 'click', (e) ->
+    e.preventDefault()
+    $panes.toggleClass('panes_full')
+    dv.resizeGridster()
 
 # class ContentItem extends Backbone.Model
 #

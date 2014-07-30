@@ -32,7 +32,7 @@ script type="text/html" id="tmpl_note"
           a.bvi.button-add href="#": svg.vi width="75" height="63": use xlink:href="#vi-plus"
         .buttons.buttons_tr
           a.bvi.button-remove href="#": svg.vi width="20" height="20": use xlink:href="#vi-cross"
-        .buttons.buttons_br
+        / .buttons.buttons_br
           a.bvi.button-toggle-size href="#": svg.vi width="20" height="20": use xlink:href="#vi-resize"
         footer
           cite
@@ -43,23 +43,27 @@ script type="text/html" id="tmpl_note"
 
   .pane.pane_left
 
-      ul.nav.nav-tabs.nav-justified#contents-tabs
-        li.active: a href="#objects" role="tab" data-toggle="tab" Объекты
-        li: a href="#texts" role="tab" data-toggle="tab" Тексты
-        li: a href="#multimedia" role="tab" data-toggle="tab" Мультимедиа
-        li: a href="#context" role="tab" data-toggle="tab" Контекст
+    a.btn.btn-link.button-pane-expand href="#" &gt;
 
-      .tab-content
-        .tab-pane.active.scrollable#objects
-          .items.scrollable-content
-        .tab-pane.scrollable#texts
-          .items.scrollable-content
-        .tab-pane.scrollable#multimedia
-          .items.scrollable-content
-        .tab-pane.scrollable#context
-          .items.scrollable-content
+    ul.nav.nav-tabs.nav-justified#contents-tabs
+      li.active: a href="#objects" role="tab" data-toggle="tab" Объекты
+      li: a href="#texts" role="tab" data-toggle="tab" Тексты
+      li: a href="#multimedia" role="tab" data-toggle="tab" Мультимедиа
+      li: a href="#context" role="tab" data-toggle="tab" Контекст
+
+    .tab-content
+      .tab-pane.active.scrollable#objects
+        .items.scrollable-content
+      .tab-pane.scrollable#texts
+        .items.scrollable-content
+      .tab-pane.scrollable#multimedia
+        .items.scrollable-content
+      .tab-pane.scrollable#context
+        .items.scrollable-content
 
   .pane.pane_right.scrollable
+
+    a.btn.btn-link.button-pane-collapse href="#" &lt; Развернуть
 
     article#display
       header

@@ -134,11 +134,15 @@ a, a:link {
   height: 100%;
   top: 0;
   background: $body-bg;
-  @include transition(width .3s);
+  @include transition(width .3s, left .3s, right .3s);
   .nav-tabs {
     position: relative;
     z-index: 2;
-    background: $body-bg;
+    background: #f0f0f0;
+    li.active a {
+      background: #f0f0f0;
+      border-bottom-color: #f0f0f0;
+      }
     }
   .tab-content {
     box-sizing: padding-box;
@@ -155,12 +159,44 @@ a, a:link {
 .pane_left {
   width: 25%;
   left: 0;
+  background: #f0f0f0;
   }
 .pane_right {
   width: 75%;
   right: 0;
+  left: auto;
   border-left: 1px solid #000;
+  .panes_full & {
+    width: auto;
+    left: 39px;
+    }
   }
+
+.button-pane-expand,
+.button-pane-collapse {
+  position: absolute; z-index: 3;
+  left: 0; top: 0;
+  &,
+  &:hover {
+    color: $text-color;
+    text-decoration: none;
+    }
+  }
+.button-pane-expand {
+  width: 39px;
+  text-align: center;
+  display: none;
+  .panes_full & {
+    display: block;
+    }
+  }
+.button-pane-collapse {
+  display: block;
+  .panes_full & {
+    display: none;
+    }
+  }
+
 
 .items {
   // width: 100%;
@@ -282,6 +318,23 @@ figure {
 blockquote {
   border: none;
   text-align: center;
+  .cell & {
+    margin: 0;
+    }
+  p {
+    font-size: 13px;
+    .cell & {
+      font-size: 26px;
+      }
+    text-transform: uppercase;
+    }
+  footer {
+    font-size: 12px;
+    .cell & {
+      font-size: 14px;
+      }
+    text-transform: none;
+    }
   }
 
 #display {
