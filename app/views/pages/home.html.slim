@@ -7,36 +7,34 @@ javascript:
 
 
 script type="text/html" id="tmpl_exhibit"
-  .item.item_exhibit
-    figure
-      .buttons-wrap
-        img src=("<%= image.image.url %>".html_safe)
-        .buttons.buttons_mid
-          a.bvi.button-add href="#": svg.vi width="75" height="63": use xlink:href="#vi-plus"
-        .buttons.buttons_tr
-          a.bvi.button-remove href="#": svg.vi width="20" height="20": use xlink:href="#vi-cross"
-        .buttons.buttons_br
-          a.bvi.button-toggle-size href="#": svg.vi width="20" height="20": use xlink:href="#vi-resize"
-      figcaption
-        p <%= author %>, <%= name %>, <%= year %>
-        p <%= materials %>
-        p <%= size %>
-        p <%= owner %>
+  figure
+    .buttons-wrap
+      img src=("<%= image.image.url %>".html_safe)
+      .buttons.buttons_mid
+        a.bvi.button-add href="#": svg.vi width="75" height="63": use xlink:href="#vi-plus"
+      .buttons.buttons_tr
+        a.bvi.button-remove href="#": svg.vi width="20" height="20": use xlink:href="#vi-cross"
+      .buttons.buttons_br
+        a.bvi.button-toggle-size href="#": svg.vi width="20" height="20": use xlink:href="#vi-resize"
+    figcaption
+      p <%= author %>, <%= name %>, <%= year %>
+      p <%= materials %>
+      p <%= size %>
+      p <%= owner %>
 
 script type="text/html" id="tmpl_note"
-  .item.item_note
-    blockquote.note
-      .buttons-wrap
-        p <%= body %>
-        .buttons.buttons_mid
-          a.bvi.button-add href="#": svg.vi width="75" height="63": use xlink:href="#vi-plus"
-        .buttons.buttons_tr
-          a.bvi.button-remove href="#": svg.vi width="20" height="20": use xlink:href="#vi-cross"
-        / .buttons.buttons_br
-          a.bvi.button-toggle-size href="#": svg.vi width="20" height="20": use xlink:href="#vi-resize"
-        footer
-          cite
-            <%= author %>
+  blockquote.note
+    .buttons-wrap
+      p <%= body %>
+      .buttons.buttons_mid
+        a.bvi.button-add href="#": svg.vi width="75" height="63": use xlink:href="#vi-plus"
+      .buttons.buttons_tr
+        a.bvi.button-remove href="#": svg.vi width="20" height="20": use xlink:href="#vi-cross"
+      / .buttons.buttons_br
+        a.bvi.button-toggle-size href="#": svg.vi width="20" height="20": use xlink:href="#vi-resize"
+      footer
+        cite
+          <%= author %>
 
 
 .panes

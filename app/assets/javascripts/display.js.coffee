@@ -2,12 +2,13 @@
 #= require 'backbone-min'
 #= require 'backbone.marionette.min'
 #= require 'iscroll'
-#= require 'jquery.coords'
-#= require 'jquery.collision'
-#= require 'jquery.draggable'
+# require 'jquery.coords'
+# require 'jquery.collision'
+# require 'jquery.draggable'
 #= require 'utils'
-#= require 'jquery.gridster'
-# require 'draggabilly.pkgd.min'
+#= require 'jquery-ui.min'
+# require 'jquery.animate-enhanced.min'
+# require 'jquery.gridster'
 
 
 window.DisplayApplication = new Marionette.Application
@@ -43,11 +44,13 @@ class window.Notes extends Backbone.Collection
 
 
 class window.DisplayItemView extends Marionette.ItemView
+  itemClassName: 'item'
   triggers:
     'click .button-add': 'buttonAdd:click'
     'click .button-remove': 'buttonRemove:click'
     'click .button-toggle-size': 'buttonToggleSize:click'
   onRender: ->
+    @$el.addClass @itemClassName
     @on 'buttonAdd:click', (e) ->
       unless e.model.get 'addedToDisplay'
         window.displayedItems.push e.model
@@ -61,12 +64,11 @@ class window.DisplayItemView extends Marionette.ItemView
     @on 'buttonToggleSize:click', (e) ->
       e.view.toggleSize()
       e.view.trigger 'resize'
-    # @draggie = new Draggabilly @el
   modelEvents:
     addedToDisplay: ->
-      @$el.addClass('item-displayed')
+      @$el.addClass('item_displayed')
     removedFromDisplay: ->
-      @$el.removeClass('item-displayed')
+      @$el.removeClass('item_displayed')
   getScale: ->
     @$el.data('scale') or 1
   setScale: (scale) ->
@@ -78,12 +80,14 @@ class window.DisplayItemView extends Marionette.ItemView
 
 class window.ExhibitView extends DisplayItemView
   template: '#tmpl_exhibit'
+  itemClassName: 'item item_exhibit'
 
 
 class window.NoteView extends DisplayItemView
   basicSize: [2, 2]
   getScale: -> 2
   template: '#tmpl_note'
+  itemClassName: 'item item_note'
 
 
 class GridsterCollectionView extends Marionette.CollectionView
@@ -154,7 +158,6 @@ class GridsterCollectionView extends Marionette.CollectionView
     else
       sizeX = childView.originalSize.x
       sizeY = childView.originalSize.y
-    console.log sizeX, sizeY
     @gridster.resize_widget childView.$el, sizeX * scale, sizeY * scale
   onBeforeRemoveChild: (childView) ->
     @gridster.remove_widget childView.$el
@@ -173,9 +176,77 @@ class window.NoteListView extends Marionette.CollectionView
   childView: NoteView
 
 
-class window.DisplayView extends GridsterCollectionView
-  minCols: 3
+class window.DisplayView extends Marionette.CollectionView
+  # minCols: 3
+  # maxCols: 3
   maxCols: 3
+  _findRows: ->
+    @$rows = @$el.children('.display-row')
+  _addRow: ->
+    $row = $('<div class="display-row"></div>')
+    $row.appendTo(@$el)
+    @_setupSortable($row, true)
+    @_findRows()
+    $row
+  _setupSortable: ($el, isRow = false) ->
+    return true if isRow
+    $el.sortable
+      connectWith: ['.display-col', '.display-row']
+      items: '.item'
+      placeholder: 'display-placeholder'
+      forcePlaceholderSize: true
+      remove: (e, ui) =>
+        $col = $(e.target)
+        return true unless $col.is('.display-col')
+        $row = $col.closest('.display-row')
+        @_cleanUp($row, $col)
+  _findOrAddRow: ->
+    $row = @_findRows().not('.display-row_full')
+    if $row.length
+      $row.first()
+    else
+      @_addRow()
+  _rowSize: ($row) ->
+    rs = 0
+    rs += ($(col).data('sizeX') or 0) for col in $row.children()
+    rs
+  _updateRow: ($row) ->
+    $row.toggleClass('display-row_full', @_rowSize($row) >= 3)
+    # $row.sortable('refresh')
+  # initialize: ->
+  onRender: ->
+    @$pane = @$el.closest('.pane,body')
+  _addColToRow: ($row, type) ->
+    $col = $('<div class="display-col"></div>')
+    $row.append $col
+    @_setupSortable($col)
+    $col
+  attachHtml: (collectionView, childView, index) ->
+    # $col = $('<div class="display-col"></div>').append(childView.$el)
+    sizeX = if childView.basicSize then childView.basicSize[0] else 1
+    $row = @_findOrAddRow(sizeX)
+    $col = @_addColToRow $row
+    $col.data('sizeX', sizeX)
+    $col.append childView.$el
+    # $col.sortable
+    #   connectWith: '.display-col'
+    #   placeholder: 'display-placeholder'
+    #   forcePlaceholderSize: true
+    # $row.children('.display-col_last').before($col)
+    # $row.append($col)
+    @_updateRow($row)
+    @$pane.animate({scrollTop: @$pane[0].scrollTop + $col.offset().top})
+  _cleanUp: ($row, $col) ->
+    $col.remove() if $col.children().length == 0
+    if $row.children().length == 0
+      $row.remove()
+    else
+      @_updateRow($row)
+  onBeforeRemoveChild: (childView) ->
+    $col = childView.$el.closest('.display-col')
+    $row = $col.closest('.display-row')
+    childView.$el.remove()
+    @_cleanUp($row, $col)
   getChildView: (child) ->
     if child instanceof DisplayItem
       child.getView()
@@ -199,6 +270,7 @@ DisplayApplication.addInitializer ->
     collection: displayedItems
     el: '#display-view'
   dv.render()
+
   $ct = $('#contents-tabs')
   $pl = $('.pane_left')
   resizeTabs = ->
@@ -211,11 +283,19 @@ DisplayApplication.addInitializer ->
   if $ct.length
     resizeTabs()
     $(window).on 'resize', resizeTabsSafe
+
   $panes = $('.panes')
+  $pr = $('.pane_right')
+  panesFull = false
   $('.button-pane-expand, .button-pane-collapse').on 'click', (e) ->
     e.preventDefault()
-    $panes.toggleClass('panes_full')
-    dv.resizeGridster()
+    panesFull = !panesFull
+    $panes.toggleClass('panes_full', panesFull)
+    $pr.animate {
+      left: if panesFull then '39px' else '25%'
+      # width: if panesFull then 'auto' else '75%'
+    }, 300
+    # dv.resizeGridster()
 
 # class ContentItem extends Backbone.Model
 #

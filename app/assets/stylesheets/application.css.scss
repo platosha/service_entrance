@@ -4,7 +4,8 @@
  *= require_self
  */
 @import "framework_and_overrides";
-@import "jquery.gridster.min";
+// @import "jquery.gridster.min";
+@import "jquery-ui.min";
 @import "compass/css3";
 
 
@@ -134,7 +135,7 @@ a, a:link {
   height: 100%;
   top: 0;
   background: $body-bg;
-  @include transition(width .3s, left .3s, right .3s);
+  // @include transition(width .3s, left .3s, right .3s);
   .nav-tabs {
     position: relative;
     z-index: 2;
@@ -162,14 +163,14 @@ a, a:link {
   background: #f0f0f0;
   }
 .pane_right {
-  width: 75%;
+  width: auto;
   right: 0;
-  left: auto;
+  left: 25%;
   border-left: 1px solid #000;
-  .panes_full & {
-    width: auto;
-    left: 39px;
-    }
+  // .panes_full & {
+  //   width: auto;
+  //   left: 39px;
+  //   }
   }
 
 .button-pane-expand,
@@ -209,16 +210,16 @@ a, a:link {
 
 .item {
   position: relative;
-  .cell & {
+  #display & {
     background: $body-bg;
-    padding: 10px;
-    margin: -10px;
+    padding: 1em;
+    margin: -1em -1em 2em;
     }
-  .items .item-displayed & {
+  .items &.item_displayed {
     display: none;
     }
   .items & {
-    margin: 0 0 4em;
+    margin: 0 0 3em;
     }
   .buttons-wrap {
     position: relative; z-index: 1;
@@ -285,7 +286,7 @@ a, a:link {
   .button-toggle-size {
     display: none;
     }
-  .item-displayed & {
+  &.item_displayed {
     .button-remove,
     .button-toggle-size {
       display: inline-block;
@@ -301,7 +302,7 @@ a, a:link {
 
 figure {
   margin: 2em 0;
-  .cell & {
+  #display & {
     margin: 0;
     }
   img {
@@ -318,19 +319,19 @@ figure {
 blockquote {
   border: none;
   text-align: center;
-  .cell & {
+  #display & {
     margin: 0;
     }
   p {
     font-size: 13px;
-    .cell & {
+    #display & {
       font-size: 26px;
       }
     text-transform: uppercase;
     }
   footer {
     font-size: 12px;
-    .cell & {
+    #display & {
       font-size: 14px;
       }
     text-transform: none;
@@ -339,7 +340,46 @@ blockquote {
 
 #display {
   margin: 30px 0;
+  text-align: center;
   header {
     text-align: center;
     }
+  .item {
+    display: inline-block;
+    vertical-align: top;
+    width: 23.333%;
+    // margin-left: 3.75%;
+    // margin-right: 3.75%;
+    text-align: left;
+    }
+  .display-col .item {
+    display: block;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    }
   }
+  .display-row {
+    overflow: hidden;
+    padding: 1em 0 0;
+    background: #fcc;
+    }
+  .display-col {
+    display: inline-block;
+    vertical-align: top;
+    // width: 23.333%;
+    width: 30.833%;
+    padding: 0 3.75% 100%;
+    margin-bottom: -100%;
+    // margin-left: 3.75%;
+    // margin-right: 3.75%;
+    background: #cfc;
+    }
+  .display-placeholder {
+    // border: 1px dashed #333;
+    // border-color: rgba(0, 0, 0, 0.25);
+    // margin: -1px;
+    background: #ccc;
+    background-color: rgba(0, 0, 0, 0.25);
+    margin: 0 0 3em;
+    }
