@@ -289,10 +289,10 @@ class window.DisplayView extends Marionette.CollectionView
     # else
     #   @_addRow()
     $row = @_findRows().last()
-    unless $row.is('.display-row_full')
-      $row
-    else
+    if $row.length < 1 or $row.is('.display-row_full')
       @_addRow()
+    else
+      $row
   _rowSize: ($row) ->
     rs = 0
     rs += ($(col).data('sizeX') or 1) for col in $row.children()
