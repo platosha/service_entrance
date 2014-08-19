@@ -43,3 +43,10 @@ end
     author: 'Яндекс Весна'
   ).save!
 end
+
+5.times do
+  Media.new(
+    name: 'Jurassic Park - Realistic Dinosaurs [Remake, Melodica Cover]',
+    embed: '<iframe width="{{width}}" height="{{height}}" src="//www.youtube.com/embed/-e3Rvmb6rD0?rel=0" frameborder="0" allowfullscreen></iframe>'
+  ).save!
+end

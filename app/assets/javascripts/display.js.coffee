@@ -43,6 +43,13 @@ class window.Notes extends Backbone.Collection
   model: Note
 
 
+class window.Media extends DisplayItem
+  getView: -> window.MediaView
+
+class window.Medias extends Backbone.Collection
+  model: Media
+
+
 class window.DisplayItemView extends Marionette.ItemView
   itemClassName: 'item'
   triggers:
@@ -88,6 +95,13 @@ class window.NoteView extends DisplayItemView
   getScale: -> 2
   template: '#tmpl_note'
   itemClassName: 'item item_note'
+
+
+class window.MediaView extends DisplayItemView
+  basicSize: [2, 2]
+  getScale: -> 2
+  template: '#tmpl_media'
+  itemClassName: 'item item_media'
 
 
 class GridsterCollectionView extends Marionette.CollectionView
@@ -174,6 +188,11 @@ class window.ExhibitListView extends Marionette.CollectionView
 class window.NoteListView extends Marionette.CollectionView
   initialize: ->
   childView: NoteView
+
+
+class window.MediaListView extends Marionette.CollectionView
+  initialize: ->
+  childView: MediaView
 
 
 class window.DisplayView extends Marionette.CollectionView
@@ -320,6 +339,7 @@ class window.DisplayView extends Marionette.CollectionView
 window.displayItems =
   exhibits: new Exhibits
   notes: new Notes
+  medias: new Medias
 
 
 DisplayApplication.addInitializer ->
@@ -331,6 +351,10 @@ DisplayApplication.addInitializer ->
     collection: displayItems.notes
     el: '#texts .items'
   nlv.render()
+  mlv = new MediaListView
+    collection: displayItems.medias
+    el: '#multimedia .items'
+  mlv.render()
   dv = new DisplayView
     collection: displayedItems
     el: '#display-view'

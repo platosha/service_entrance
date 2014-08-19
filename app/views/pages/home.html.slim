@@ -4,6 +4,7 @@
 javascript:
   displayItems.exhibits.reset(#{ @exhibits_json.html_safe });
   displayItems.notes.reset(#{ @notes_json.html_safe });
+  displayItems.medias.reset(#{ @medias_json.html_safe });
 
 
 script type="text/html" id="tmpl_exhibit"
@@ -35,6 +36,19 @@ script type="text/html" id="tmpl_note"
       footer
         cite
           <%= author %>
+
+script type="text/html" id="tmpl_media"
+  figure
+    .buttons-wrap
+      <%= embed.replace('{{width}}', '240').replace('{{height}}', '135') %>
+      .buttons.buttons_mid
+        a.bvi.button-add href="#": svg.vi width="75" height="63": use xlink:href="#vi-plus"
+      .buttons.buttons_tr
+        a.bvi.button-remove href="#": svg.vi width="20" height="20": use xlink:href="#vi-cross"
+      / .buttons.buttons_br
+        a.bvi.button-toggle-size href="#": svg.vi width="20" height="20": use xlink:href="#vi-resize"
+    figcaption
+      p <%= name %>
 
 
 .panes

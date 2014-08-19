@@ -11,6 +11,7 @@ ServiceEntrance::Application.routes.draw do
     resources :users
     resources :exhibits
     resources :notes
+    resources :medias
   end
 
 end

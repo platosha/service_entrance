@@ -1,0 +1,11 @@
+= form_for [:admin, @media], :html => { role: 'form', multipart: true, class: 'form-horizontal' } do |f|
+  .form-group
+    = f.label :name, class: 'col-sm-3 control-label'
+    .col-sm-6 = f.text_field :name, class: 'form-control'
+  .form-group
+    = f.label :embed, class: 'col-sm-3 control-label'
+    .col-sm-6 = f.text_area :embed, autofocus: true, class: 'form-control'
+
+  .row: .col-sm-6.col-sm-offset-3
+    = f.submit class: 'btn btn-danger'
+    = link_to "Back to other media", admin_medias_path, class: 'btn btn-link'

@@ -10,6 +10,9 @@ class PagesController < ApplicationController
     @notes_json ||= ActiveModel::ArraySerializer.new(Note.all,
       each_serializer: NoteSerializer
     ).to_json
+    @medias_json ||= ActiveModel::ArraySerializer.new(Media.all,
+      each_serializer: MediaSerializer
+    ).to_json
   end
 
   def inside
