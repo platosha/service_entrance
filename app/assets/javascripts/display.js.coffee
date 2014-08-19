@@ -178,49 +178,114 @@ class window.NoteListView extends Marionette.CollectionView
 
 class window.DisplayView extends Marionette.CollectionView
   # minCols: 3
-  # maxCols: 3
   maxCols: 3
   _findRows: ->
     @$rows = @$el.children('.display-row')
   _addRow: ->
     $row = $('<div class="display-row"></div>')
     $row.appendTo(@$el)
-    @_setupSortable($row, true)
+    # @_setupSortable($row, true)
     @_findRows()
     $row
+  _setupTemps: ($col) ->
+    $rows = @$el.children()
+    for row in $rows
+      $row = $(row)
+      unless $row.is('.display-row_full')
+        $cols = $row.children('.display-col')
+        continue unless $cols.length
+        $firstCol = $cols.first()
+        $lastCol = $cols.last()
+        $colA = $('<div class="display-col display-col_temp display-col_temp-l"></div>').prependTo($row)
+        # $colA.css 'left', $firstCol.position().left - $colA[0].offsetWidth
+        $colA.height $row.height()
+        @_setupSortable($colA)
+        $colB = $('<div class="display-col display-col_temp display-col_temp-r"></div>').appendTo($row)
+        # $colB.css 'left', $lastCol.position().left + $lastCol[0].offsetWidth
+        $colB.height $row.height()
+        @_setupSortable($colB)
+    # $rowA = @_addRow().addClass('display-row_temp display-row_temp-t')
+    # $rowA.remove().prependTo(@$el)
+    # $colA = $('<div class="display-col display-col_temp display-col_temp-t"></div>').appendTo($rowA)
+    # @_setupSortable($colA)
+    $rowB = @_addRow().addClass('display-row_temp display-row_temp-b')
+    # $rowB.remove().appendTo(@$el)
+    $colB = $('<div class="display-col display-col_temp display-col_temp-b"></div>').appendTo($rowB)
+    @_setupSortable($colB)
+    $col.sortable('refresh')
+  _removeTemps: ($col) ->
+    $rows = @$el.children()
+    for row in $rows
+      $row = $(row)
+      $tempCols = $row.find('.display-col_temp')
+      for tc in $tempCols
+        $tc = $(tc)
+        if $tc.children().length
+          $tc.removeClass 'display-col_temp display-col_temp-l display-col_temp-r'
+          $tc.css 'height', ''
+        else
+          $tc.remove()
+      if $row.is('.display-row_temp')
+        if $row.children().length
+          $row.removeClass 'display-row_temp display-row_temp-t display-row_temp-b'
+          $tc.css 'height', ''
+        else
+          $row.remove()
   _setupSortable: ($el, isRow = false) ->
-    return true if isRow
+    # return true if isRow
     $el.sortable
-      connectWith: ['.display-col', '.display-row']
+      # helper: 'clone'
+      # appendTo: @$el
+      connectWith: '.display-col'
       items: '.item'
       placeholder: 'display-placeholder'
       forcePlaceholderSize: true
-      remove: (e, ui) =>
+      # forcePlaceholderSize: false
+      start: (e, ui) =>
         $col = $(e.target)
-        return true unless $col.is('.display-col')
+        @_setupTemps($col)
+        @$el.addClass('on-sorting')
+      stop: (e, ui) =>
+        console.log 'stop', e.target
+        $col = $(e.target)
+        @_removeTemps($col)
         $row = $col.closest('.display-row')
         @_cleanUp($row, $col)
+        @$el.removeClass('on-sorting')
+      change: (e, ui) =>
+        console.log 'change', e.target
+      update: (e, ui) =>
+        console.log 'update', e.target
+      remove: (e, ui) =>
+        $col = $(e.target)
+        unless $col.is('.display-col')
+          # @_cleanUp($col)
+        else
+          $row = $col.closest('.display-row')
+          # @_cleanUp($row, $col)
   _findOrAddRow: ->
     $row = @_findRows().not('.display-row_full')
     if $row.length
-      $row.first()
+      $row.last()
     else
       @_addRow()
   _rowSize: ($row) ->
     rs = 0
-    rs += ($(col).data('sizeX') or 0) for col in $row.children()
+    rs += ($(col).data('sizeX') or 1) for col in $row.children()
     rs
   _updateRow: ($row) ->
     $row.toggleClass('display-row_full', @_rowSize($row) >= 3)
     # $row.sortable('refresh')
   # initialize: ->
   onRender: ->
-    @$pane = @$el.closest('.pane,body')
+    @$scrollParent = @$el.scrollParent()
   _addColToRow: ($row, type) ->
     $col = $('<div class="display-col"></div>')
     $row.append $col
     @_setupSortable($col)
     $col
+  _scrollToElement: ($el) ->
+    @$scrollParent.animate({scrollTop: @$scrollParent[0].scrollTop + $el.offset().top})
   attachHtml: (collectionView, childView, index) ->
     # $col = $('<div class="display-col"></div>').append(childView.$el)
     sizeX = if childView.basicSize then childView.basicSize[0] else 1
@@ -235,9 +300,9 @@ class window.DisplayView extends Marionette.CollectionView
     # $row.children('.display-col_last').before($col)
     # $row.append($col)
     @_updateRow($row)
-    @$pane.animate({scrollTop: @$pane[0].scrollTop + $col.offset().top})
+    @_scrollToElement(childView.$el)
   _cleanUp: ($row, $col) ->
-    $col.remove() if $col.children().length == 0
+    $col.remove() if $col? and $col.children().length == 0
     if $row.children().length == 0
       $row.remove()
     else
@@ -287,15 +352,20 @@ DisplayApplication.addInitializer ->
   $panes = $('.panes')
   $pr = $('.pane_right')
   panesFull = false
-  $('.button-pane-expand, .button-pane-collapse').on 'click', (e) ->
-    e.preventDefault()
-    panesFull = !panesFull
+  togglePanes = (full) ->
+    return true if panesFull is full
+    panesFull = full
     $panes.toggleClass('panes_full', panesFull)
     $pr.animate {
       left: if panesFull then '39px' else '25%'
       # width: if panesFull then 'auto' else '75%'
     }, 300
+  $('.button-pane-expand, .button-pane-collapse').on 'click', (e) ->
+    e.preventDefault()
+    togglePanes(!panesFull)
     # dv.resizeGridster()
+  $ct.on 'click', 'a', (e) ->
+    togglePanes(false)
 
 # class ContentItem extends Backbone.Model
 #

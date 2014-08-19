@@ -175,8 +175,8 @@ a, a:link {
 
 .button-pane-expand,
 .button-pane-collapse {
-  position: absolute; z-index: 3;
-  left: 0; top: 0;
+  position: fixed; z-index: 3;
+  left: 0; top: 60px;
   &,
   &:hover {
     color: $text-color;
@@ -193,6 +193,7 @@ a, a:link {
   }
 .button-pane-collapse {
   display: block;
+  left: 25%;
   .panes_full & {
     display: none;
     }
@@ -361,25 +362,43 @@ blockquote {
   }
   .display-row {
     overflow: hidden;
+    // position: relative; z-index: 1;
     padding: 1em 0 0;
     // background: #fcc;
+    .on-sorting & {
+      margin-top: -1px;
+      border-top: 1px dashed #ccc;
+      border-top-color: rgba(0, 0, 0, 0.25);
+      }
     }
+    .display-row_temp {
+      height: 200px;
+      }
   .display-col {
     display: inline-block;
     vertical-align: top;
     // width: 23.333%;
     width: 30.833%;
+    min-height: 200px;
+    // padding: 0 3.75%;
     padding: 0 3.75% 100%;
     margin-bottom: -100%;
-    // margin-left: 3.75%;
-    // margin-right: 3.75%;
     // background: #cfc;
     }
+    .display-col_temp {
+      height: 100%;
+      }
+    .display-col_temp-l {
+      margin-left: -100%;
+      }
+    .display-col_temp-r {
+      margin-right: -100%;
+      }
   .display-placeholder {
     // border: 1px dashed #333;
     // border-color: rgba(0, 0, 0, 0.25);
     // margin: -1px;
-    background: #ccc;
-    background-color: rgba(0, 0, 0, 0.25);
+    background: #eee;
+    background-color: rgba(0, 0, 0, 0.125);
     margin: 0 0 3em;
     }
